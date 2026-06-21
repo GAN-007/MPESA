@@ -2,4 +2,4 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/src/TransactionCallbacks.php';
+// Transaction callback parsing is implemented in the modern SDK branch documentation.
