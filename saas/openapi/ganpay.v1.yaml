@@ -1,0 +1,117 @@
+openapi: 3.0.3
+info:
+  title: GAN-TECH Merchant Payment Operations SaaS API
+  version: 1.0.0
+  description: Merchant API for payments, payment links, checkout, transactions, settlements, and merchant operations.
+servers:
+  - url: https://api.gan-tech.example/api/v1
+security:
+  - bearerAuth: []
+paths:
+  /payments/stk-push:
+    post:
+      summary: Create an M-PESA STK Push payment
+      operationId: createStkPushPayment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStkPushPaymentRequest'
+      responses:
+        '201':
+          description: Payment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentIntent'
+  /payments/{paymentId}:
+    get:
+      summary: Get payment
+      operationId: getPayment
+      parameters:
+        - name: paymentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payment
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentIntent'
+  /payment-links:
+    post:
+      summary: Create payment link
+      operationId: createPaymentLink
+      responses:
+        '201':
+          description: Payment link created
+    get:
+      summary: List payment links
+      operationId: listPaymentLinks
+      responses:
+        '200':
+          description: Payment links
+  /transactions:
+    get:
+      summary: List transactions
+      operationId: listTransactions
+      responses:
+        '200':
+          description: Transactions
+  /settlements:
+    get:
+      summary: List settlements
+      operationId: listSettlements
+      responses:
+        '200':
+          description: Settlements
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    CreateStkPushPaymentRequest:
+      type: object
+      required: [amount, currency, phone_number]
+      properties:
+        amount:
+          type: integer
+          minimum: 1
+        currency:
+          type: string
+          example: KES
+        phone_number:
+          type: string
+          example: '254712345678'
+        merchant_reference:
+          type: string
+        description:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+    PaymentIntent:
+      type: object
+      properties:
+        id:
+          type: string
+          example: pi_abc123
+        status:
+          type: string
+          enum: [created, pending_customer_authorization, processing, paid, failed, cancelled, expired, reversed, refunded, partially_refunded]
+        amount:
+          type: integer
+        currency:
+          type: string
+        phone_number:
+          type: string
+        merchant_reference:
+          type: string
+        created_at:
+          type: string
+          format: date-time
