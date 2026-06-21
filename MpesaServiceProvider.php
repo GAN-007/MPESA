@@ -1,35 +1,11 @@
 <?php
 
-namespace Safaricom\Mpesa;
+declare(strict_types=1);
 
-use Illuminate\Support\ServiceProvider;
+/* Backward-compatible entrypoint. Prefer Composer PSR-4 autoloading. */
 
-/**
- * Class MpesaServiceProvider
- * @package Safaricom\Mpesa
- */
-class MpesaServiceProvider extends ServiceProvider
-{
-    /**
-     * Bootstrap the application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-
-    }
-
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->app->singleton(Mpesa::class, function () {
-            return new Mpesa();
-        });
-
-    }
+if (is_file(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+} else {
+    require_once __DIR__ . '/src/MpesaServiceProvider.php';
 }
