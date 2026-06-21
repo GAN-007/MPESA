@@ -1,0 +1,41 @@
+services:
+  app:
+    image: php:8.3-cli
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    command: php artisan serve --host=0.0.0.0 --port=8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+
+  queue:
+    image: php:8.3-cli
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    command: php artisan queue:work --tries=3 --timeout=120
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ganpay
+      POSTGRES_USER: ganpay
+      POSTGRES_PASSWORD: ganpay_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - ganpay_postgres:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  ganpay_postgres:
