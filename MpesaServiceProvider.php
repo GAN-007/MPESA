@@ -1,35 +1,4 @@
 <?php
+declare(strict_types=1);
 
-namespace Safaricom\Mpesa;
-
-use Illuminate\Support\ServiceProvider;
-
-/**
- * Class MpesaServiceProvider
- * @package Safaricom\Mpesa
- */
-class MpesaServiceProvider extends ServiceProvider
-{
-    /**
-     * Bootstrap the application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-
-    }
-
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->app->singleton(Mpesa::class, function () {
-            return new Mpesa();
-        });
-
-    }
-}
+require_once __DIR__ . '/src/MpesaServiceProvider.php';
